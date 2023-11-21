@@ -1,11 +1,11 @@
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(
-    'mysql',
-    '__root',
-    '',
+    'evnts',
+    'root',
+    '12345',
     {
         host: 'localhost',
-        dialect: 'mysql'
+        dialect: 'mysql',
     }
 );
 const User = sequelize.define("user", {
@@ -53,28 +53,9 @@ const Event = sequelize.define("event", {
     charset: 'utf8',
     collate: 'utf8_general_ci'
 });
-const UserEvet = sequelize.define("user_event", {
-    id: {
-        type: Sequelize.BIGINT,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false
-    },
-    UserId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: User,
-            key: 'id'
-        }
-    },
-    EventId: {
-        type: Sequelize.DataTypes.INTEGER,
-        references: {
-            model: Event,
-            key: 'id'
-        }
-    }
-});
-User.belongsToMany(Event, { through: UserEvet });
-Event.belongsToMany(User, { through: UserEvet });
-module.exports = { User, Event, UserEvet}
+User.hasMany(Event, {
+    foreignKey: 'id'
+})
+Event.belongsTo(User)
+module.exports = { User, Event }
+// sequelize.sync({force: true})

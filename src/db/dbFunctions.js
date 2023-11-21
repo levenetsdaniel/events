@@ -5,7 +5,4 @@ async function getEvents (){
     })
     return res
 }
-User.create({
-
-});
 module.exports = {getEvents}

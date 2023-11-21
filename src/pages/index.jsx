@@ -1,14 +1,14 @@
 
-import './App.css';
-import List from './components/list';
+// import './index.css';
+
 import TextField from '@mui/material/TextField';
 
-function App() {
+export default function Index() {
   
   return (
     <div className="App">
       <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-      <List></List>
+
     </div>
   );
 }
@@ -16,4 +16,4 @@ function App() {
 
 
 
-export default App;
+
