@@ -5,4 +5,4 @@ async function getEvents (){
     })
     return res
 }
-module.exports = {getEvents}
+export {getEvents}

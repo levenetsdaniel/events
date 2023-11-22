@@ -25,7 +25,8 @@ const User = sequelize.define("user", {
     }
 }, {
     charset: 'utf8',
-    collate: 'utf8_general_ci'
+    collate: 'utf8_general_ci',
+    timestamps: false
 });
 const Event = sequelize.define("event", {
     id: {
@@ -46,16 +47,14 @@ const Event = sequelize.define("event", {
         type: Sequelize.STRING
     },
     date: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.DATE,
     },
 }, {
     charset: 'utf8',
-    collate: 'utf8_general_ci'
+    collate: 'utf8_general_ci',
+    timestamps: false
 });
-User.hasMany(Event, {
-    foreignKey: 'id'
-})
-Event.belongsTo(User)
-module.exports = { User, Event }
-// sequelize.sync({force: true})
+User.belongsToMany(Event, { through: 'UserToEvent' });
+Event.belongsToMany(User, { through: 'UserToEvent' });
+module.exports = { User, Event}
+//sequelize.sync({force: true})
