@@ -42,7 +42,7 @@ export function Auth() {
                             component="form"
                             sx={{
                                 '& > :not(style)': { m: 1, width: '25ch' },
-                              }}
+                            }}
                             noValidate
                             autoComplete="off"
                         >
@@ -55,7 +55,7 @@ export function Auth() {
                             component="form"
                             sx={{
                                 '& > :not(style)': { m: 1, width: '25ch' },
-                              }}
+                            }}
                             noValidate
                             autoComplete="off"
                         >
