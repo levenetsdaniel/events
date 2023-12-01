@@ -7,6 +7,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 .eventName {
@@ -15,9 +16,13 @@
     text-align: left;
 }
 
+.eventCard a {
+    color: black;
+    text-decoration: none;
+}
+
 .AuthButton {
     margin: 5px;
-    text-align: left;
 }
 
 .head {
@@ -31,17 +36,59 @@
     padding: 4px 12px;
 }
 
+
 .search {
+    display: flex;
     margin-top: 0px;
     margin-right: auto;
-    border: 1px solid black;
-    border-radius: 5px;
     margin-bottom: 10px;
     margin-top: 10px;
     flex-grow: 1;
+    align-items: center;
+}
+
+.searchField {
+    border-radius: 5px;
+    width: 100%;
+}
+
+.eventSelector {
+    position: relative;
+    display: inline-block;
+    padding-right: 25px;
 }
 
 .selectButton {
-    margin-right: 10px;
-    vertical-align: middle;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.likeButton {
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropDawn {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+
+}
+
+.dropDawnOpen {
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    background-color: white;
+}
+
+.errorMessage span {
+    color: red;
 }

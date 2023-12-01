@@ -22,6 +22,10 @@ const User = sequelize.define("user", {
     password: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
     }
 }, {
     charset: 'utf8',
@@ -57,4 +61,4 @@ const Event = sequelize.define("event", {
 User.belongsToMany(Event, { through: 'UserToEvent' });
 Event.belongsToMany(User, { through: 'UserToEvent' });
 module.exports = { User, Event}
-//sequelize.sync({force: true})
+// sequelize.sync({force: true})

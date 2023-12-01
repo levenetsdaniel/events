@@ -1,8 +1,9 @@
 //import './index.css';
 import { getEvents } from '../db/dbFunctions'
-import { Auth } from './objects/auth.jsx'
-import { SearchField } from './objects/search.jsx'
-import { EventSelect } from './objects/eventSelcet.jsx';
+import { Auth } from '../components/auth.jsx'
+import { SearchField } from '../components/search.jsx'
+import { EventSelect } from '../components/eventSelcet.jsx';
+import { LikeButton } from '../components/likeButton.jsx';
 
 
 
@@ -27,12 +28,15 @@ export default function Index(props) {
       {
         props.events.map((event, id) => {
           return (
+
             <div className='eventCard'>
-              <div class='eventName'>
-                <h2><a href={event.link}>{event.name}</a></h2>
-                
-              </div>
-              <EventSelect></EventSelect>
+              <a href={event.link}>
+                <div class='eventName'>
+                  <h2>{event.name}</h2>
+                </div>
+              </a>
+              {/* <EventSelect></EventSelect> */}
+              <LikeButton></LikeButton>
             </div>
 
           )
@@ -50,7 +54,6 @@ export const getServerSideProps = async (context) => {
     props: { events }
   }
 }
-
 
 
 
