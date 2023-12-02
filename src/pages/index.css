@@ -1,6 +1,6 @@
 .eventCard {
-    border: 2px solid black;
-    border-radius: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
     margin-top: 30px;
     margin-left: 40px;
     margin-right: 40px;
@@ -8,6 +8,11 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
+    background-color: #B5FAD0;
+}
+
+.main{
+    margin-top: 100px;
 }
 
 .eventName {
@@ -23,9 +28,18 @@
 
 .AuthButton {
     margin: 5px;
+    border: 1px solid ;
+    border-radius: 5px;
+    background-color: #8EE4AF;
+    color: black;
 }
 
 .head {
+    position: fixed;
+    width: 98.2%;
+    top: 0;
+    z-index: 100;
+    overflow: hidden;
     border: 1px solid black;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -34,6 +48,7 @@
     justify-content: stretch;
     gap: 12px;
     padding: 4px 12px;
+    background-color: #43C0A7;
 }
 
 
@@ -48,11 +63,18 @@
 }
 
 .searchField {
+    border: 1px solid black;
     border-radius: 5px;
     width: 100%;
+    background-color: #8EE4AF;
+    padding-left: 5px;
 }
 
-.eventSelector {
+.text {
+    margin-bottom: -1px;
+}
+
+/* .eventSelector {
     position: relative;
     display: inline-block;
     padding-right: 25px;
@@ -63,16 +85,17 @@
     font-size: 16px;
     border: none;
     cursor: pointer;
-}
+} */
 
 .likeButton {
     padding: 16px;
     font-size: 16px;
     border: none;
     cursor: pointer;
+
 }
 
-.dropDawn {
+/* .dropDawn {
     display: none;
     position: absolute;
     min-width: 160px;
@@ -87,7 +110,7 @@
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     background-color: white;
-}
+} */
 
 .errorMessage span {
     color: red;

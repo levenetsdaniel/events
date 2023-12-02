@@ -6,6 +6,8 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import { styled } from '@mui/material/styles';
+
 
 
 
@@ -23,6 +25,11 @@ const style = {
     p: 4,
 };
 
+
+const AuthButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText('#8EE4AF'),
+    backgroundColor: '#8EE4AF',
+  }));
 export function Auth() {
 
     const [open, setOpen] = React.useState(false);
@@ -94,14 +101,14 @@ export function Auth() {
         else {
             setErrMessage('')
         }
-     
+
 
     };
 
 
     return (
         <div className='AuthButton'>
-            <Button onClick={handleOpen} variant="outlined"> Войти</Button>
+            <AuthButton onClick={handleOpen} variant="contained"> Войти</AuthButton>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -149,7 +156,7 @@ export function Auth() {
                         <span>{usernameErrMessage}</span>
                     </div>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Имя:
+                        Имя  (обязательно при регистрации):
                         <Box
                             component="form"
                             sx={{
@@ -158,7 +165,7 @@ export function Auth() {
                             noValidate
                             autoComplete="off"
                         >
-                            <TextField id="filled-basic" label="Usarname (обязателен при регистрации)" variant="filled" onChange={usernameChanged} value={username} />
+                            <TextField id="filled-basic" label="Usarname" variant="filled" onChange={usernameChanged} value={username} />
                         </Box>
                     </Typography>
                     <Typography>
