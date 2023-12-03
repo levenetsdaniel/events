@@ -25,6 +25,10 @@ const style = {
 const AuthButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText('#8EE4AF'),
     backgroundColor: '#8EE4AF',
+    '&:hover': {
+        backgroundColor: '#00ff47',
+        borderColor: '#000000',
+      },
 }));
 
 export function Auth() {
@@ -82,6 +86,7 @@ export function Auth() {
         }).then(res => {
             setCookies('token', res.data.token)
             setCookies('id', res.data.id)
+            setCookies('name', res.data.name)
         }).catch(err => console.log(err))
     };
 

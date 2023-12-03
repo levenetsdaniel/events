@@ -3,6 +3,7 @@ import { getEvents } from '../db/dbFunctions';
 import { Auth } from '../components/auth.jsx';
 import { SearchField } from '../components/search.jsx';
 import { LikeButton } from '../components/likeButton.jsx';
+import { LogoutButton } from '../components/logoutButton.jsx';
 import { useCookies } from 'react-cookie';
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
@@ -35,14 +36,16 @@ export default function Index(props) {
 
   const handleEventCkick = (id) => {
     console.log(id);
+    console.log(cookies.id)
+    console.log(cookies.name)
   }
 
   const [cookies, setCookies] = useCookies()
 
-  
+
   const filter = (e) => {
     setSearch(e.target.value)
-    if(search==='') {
+    if (search === '') {
       setSortEvents(events)
       return
     }
@@ -58,8 +61,14 @@ export default function Index(props) {
     <div className="App">
       {/* // modal */}
       <div className='head'>
-        <Auth></Auth>
+        {cookies.id === '' && (
+          <Auth></Auth>
+        )}
+        {cookies.id != '' && (
+          <LogoutButton></LogoutButton>
+        )}
         <div className='search'>
+          <SearchIcon></SearchIcon>
           <div className='searchField'>
             <Box
               sx={{
@@ -100,7 +109,9 @@ export default function Index(props) {
                     <h2>{event.name}</h2>
                   </div>
                 </a>
-                <LikeButton id={event.id} onClick={handleEventCkick}></LikeButton>
+                {cookies.id != '' && (
+                  <LikeButton id={event.id} onClick={handleEventCkick}></LikeButton>
+                )}
               </div>
 
             )

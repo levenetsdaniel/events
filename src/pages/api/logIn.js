@@ -18,7 +18,7 @@ export default async function logIn(req, res) {
 
         const token = jwt.sign({ id: user.id }, 'gen')
 
-        res.status(200).json({ token, id: user.id })
+        res.status(200).json({ token, id: user.id, name: user.name })
     }
     catch (err) {
         res.status(500).json({ message: err.message })
