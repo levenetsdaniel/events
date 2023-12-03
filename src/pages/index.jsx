@@ -1,40 +1,106 @@
 //import './index.css';
-import { getEvents } from '../db/dbFunctions'
-import { Auth } from '../components/auth.jsx'
-import { SearchField } from '../components/search.jsx'
+import { getEvents } from '../db/dbFunctions';
+import { Auth } from '../components/auth.jsx';
+import { SearchField } from '../components/search.jsx';
 import { LikeButton } from '../components/likeButton.jsx';
+import { useCookies } from 'react-cookie';
+import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#000000',
+    },
+    secondary: {
+      main: '#000000',
+    },
+  },
+});
 
 
 
 
 export default function Index(props) {
+  const [events, setEvents] = useState(props.events);
 
+  const [sortEvents, setSortEvents] = useState(events)
 
+  const handleEventCkick = (id) => {
+    console.log(id);
+  }
 
+  const [cookies, setCookies] = useCookies()
+
+  
+  const filter = (e) => {
+    setSearch(e.target.value)
+    if(search==='') {
+      setSortEvents(events)
+      return
+    }
+    var filteredList = events.filter(function (item) {
+      return item.name.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
+    });
+    setSortEvents(filteredList);
+  }
+
+  const [search, setSearch] = useState('')
 
   return (
     <div className="App">
       {/* // modal */}
-      <div class='head'>
+      <div className='head'>
         <Auth></Auth>
-        <SearchField></SearchField>
+        <div className='search'>
+          <div className='searchField'>
+            <Box
+              sx={{
+                width: '100%',
+                maxWidth: '100%',
+              }}
+            >
+              <div className='text'>
+                <ThemeProvider theme={theme}>
+                  <TextField fullWidth label="Поиск" id="fullWidth" variant="standard" onChange={filter} value={search} />
+                </ThemeProvider>
+              </div>
+            </Box>
+          </div >
+          {/* <div className='searchButton'>
+            <Box sx={{ '& button': { m: 1 } }}>
+              <Stack spacing={2} direction="row">
+                <IconButton size='large' aria-label='search'>
+                  <SearchIcon></SearchIcon>
+                </IconButton>
+              </Stack>
+            </Box>
+          </div> */}
+        </div >
       </div>
 
 
-      <div class='main'>
+      <div className='main'>
 
 
         {
-          props.events.map((event, id) => {
+          sortEvents.map((event) => {
             return (
 
-              <div className='eventCard'>
+              <div key={event.id} className='eventCard'>
                 <a href={event.link}>
-                  <div class='eventName'>
+                  <div className='eventName'>
                     <h2>{event.name}</h2>
                   </div>
                 </a>
-                <LikeButton></LikeButton>
+                <LikeButton id={event.id} onClick={handleEventCkick}></LikeButton>
               </div>
 
             )

@@ -7,18 +7,21 @@ import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 
 
-export function LikeButton() {
+export function LikeButton(props) {
+    const { id, onClick } = props;
 
     const [click, setClicked] = React.useState(false)
-    const licked = () => {
+
+    const handleClick = () => {
         setClicked(!click)
+        onClick(id);
     }
 
     return (
-        <div class='likeButton'>
+        <div className='likeButton'>
             <Box sx={{ '& > :not(style)': { m: 1 } }}>
-                <IconButton aria-label="like" onClick={licked}>
-                    <FavoriteIcon sx={{ color: (click ? pink[500]: grey[500]) }} />
+                <IconButton aria-label="like" onClick={handleClick}>
+                    <FavoriteIcon sx={{ color: (click ? pink[500] : grey[500]) }} />
                 </IconButton>
             </Box>
         </div>

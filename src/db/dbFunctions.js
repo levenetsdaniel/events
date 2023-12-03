@@ -1,4 +1,5 @@
 const { User, Event } = require('./db.js')
+
 async function getEvents() {
     let res = await Event.findAll({
         raw: true,
@@ -24,4 +25,15 @@ async function hasLogin(login) {
     return logins.length != 0
 
 }
-export { getEvents, addUser, hasLogin }
+
+async function findLogin(login) {
+    const logins = await User.findOne({
+        where: {
+            login
+        }
+    })
+
+    return logins
+}
+
+export { getEvents, addUser, hasLogin, findLogin }

@@ -112,6 +112,6 @@
     background-color: white;
 } */
 
-.errorMessage span {
+.errorMessage {
     color: red;
 }

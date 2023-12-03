@@ -19,7 +19,14 @@ const theme = createTheme({
   },
 });
 
-export function SearchField() {
+export function SearchField(props) {
+
+  const filter=(e) => {
+    var filteredList = events.filter(function (item) {
+      return item.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
+    });
+    setEvents(filteredList);
+  }
 
   const [search, setSearch] = React.useState('')
   const searchChanged = (event) => {
@@ -27,22 +34,22 @@ export function SearchField() {
   };
 
   return (
-    <div class='search'>
-      <div class='searchField'>
+    <div className='search'>
+      <div className='searchField'>
         <Box
           sx={{
             width: '100%',
             maxWidth: '100%',
           }}
         >
-          <div class='text'>
+          <div className='text'>
             <ThemeProvider theme={theme}>
               <TextField fullWidth label="Поиск" id="fullWidth" variant="standard" onChange={searchChanged} value={search} />
             </ThemeProvider>
           </div>
         </Box>
       </div >
-      <div class='searchButton'>
+      <div className='searchButton'>
         <Box sx={{ '& button': { m: 1 } }}>
           <Stack spacing={2} direction="row">
             <IconButton size='large' aria-label='search'>
