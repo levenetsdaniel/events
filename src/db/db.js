@@ -8,6 +8,7 @@ const sequelize = new Sequelize(
         dialect: 'mysql',
     }
 );
+
 const User = sequelize.define("user", {
     id: {
         type: Sequelize.BIGINT,
@@ -32,6 +33,7 @@ const User = sequelize.define("user", {
     collate: 'utf8_general_ci',
     timestamps: false
 });
+
 const Event = sequelize.define("event", {
     id: {
         type: Sequelize.BIGINT,
@@ -58,7 +60,30 @@ const Event = sequelize.define("event", {
     collate: 'utf8_general_ci',
     timestamps: false
 });
-User.belongsToMany(Event, { through: 'UserToEvent' });
-Event.belongsToMany(User, { through: 'UserToEvent' });
-module.exports = { User, Event}
-// sequelize.sync({force: true})
+
+const UserToEvent = sequelize.define('userToEvent', {
+    userId:{
+        type: Sequelize.BIGINT,
+        references: {
+            model: User,
+            key: 'id'
+        }
+    },
+    eventId:{
+        type: Sequelize.BIGINT,
+        references: {
+            model: Event,
+            key: 'id'
+        }
+    }
+})
+
+User.belongsToMany(Event, { through: UserToEvent }, {foreignKey: 'eventId'});
+Event.belongsToMany(User, { through: UserToEvent }, {foreignKey: 'userId'});
+User.hasMany(UserToEvent);
+UserToEvent.belongsTo(User);
+Event.hasMany(UserToEvent);
+UserToEvent.belongsTo(Event);
+
+module.exports = { User, Event, UserToEvent }
+// sequelize.sync({ force: true })

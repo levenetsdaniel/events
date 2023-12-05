@@ -34,6 +34,11 @@
     color: black;
 }
 
+.authForm {
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
 .head {
     position: fixed;
     width: 98.2%;

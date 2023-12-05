@@ -1,4 +1,4 @@
-const { User, Event } = require('./db.js')
+const { User, Event, UserToEvent } = require('./db.js')
 
 async function getEvents() {
     let res = await Event.findAll({
@@ -36,4 +36,27 @@ async function findLogin(login) {
     return logins
 }
 
-export { getEvents, addUser, hasLogin, findLogin }
+async function addUserToEvent(userId, eventId) {
+    UserToEvent.create({
+        userId: userId,
+        eventId: eventId
+    })
+}
+
+async function removeUserToEvent(userId) {
+    UserToEvent.destroy({
+        where: { userId: userId }
+    })
+}
+
+async function isLiked(eventId, userId) {
+    const like = UserToEvent.findAll(({
+        where: { eventId: eventId, userId: userId }
+    }))
+    if (like) {
+        return true
+    }
+    return false
+}
+
+export { getEvents, addUser, hasLogin, findLogin, addUserToEvent, removeUserToEvent, isLiked }

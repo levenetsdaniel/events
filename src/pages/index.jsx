@@ -1,17 +1,12 @@
-//import './index.css';
 import { getEvents } from '../db/dbFunctions';
 import { Auth } from '../components/auth.jsx';
-import { SearchField } from '../components/search.jsx';
 import { LikeButton } from '../components/likeButton.jsx';
 import { LogoutButton } from '../components/logoutButton.jsx';
 import { useCookies } from 'react-cookie';
-import React, { useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '@mui/material/IconButton';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
 
@@ -34,14 +29,11 @@ export default function Index(props) {
 
   const [sortEvents, setSortEvents] = useState(events)
 
-  const handleEventCkick = (id) => {
-    console.log(id);
-    console.log(cookies.id)
-    console.log(cookies.name)
-  }
+  const [cookies, setCookies] = useCookies();
 
-  const [cookies, setCookies] = useCookies()
-
+  const preparedCookies = useMemo(() => {
+    return cookies.token ? cookies : props.cookies;
+  }, [cookies, props.cookies]);
 
   const filter = (e) => {
     setSearch(e.target.value)
@@ -55,18 +47,21 @@ export default function Index(props) {
     setSortEvents(filteredList);
   }
 
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    setCookies('id', props.cookies.id || '');
+    setCookies('name', props.cookies.name || '');
+    setCookies('token', props.cookies.token || '');
+  }, [props.cookies]);
 
   return (
     <div className="App">
       {/* // modal */}
       <div className='head'>
-        {cookies.id === '' && (
-          <Auth></Auth>
-        )}
-        {cookies.id != '' && (
-          <LogoutButton></LogoutButton>
-        )}
+
+        {preparedCookies.id ? <LogoutButton /> : <Auth />}
+
         <div className='search'>
           <SearchIcon></SearchIcon>
           <div className='searchField'>
@@ -83,15 +78,6 @@ export default function Index(props) {
               </div>
             </Box>
           </div >
-          {/* <div className='searchButton'>
-            <Box sx={{ '& button': { m: 1 } }}>
-              <Stack spacing={2} direction="row">
-                <IconButton size='large' aria-label='search'>
-                  <SearchIcon></SearchIcon>
-                </IconButton>
-              </Stack>
-            </Box>
-          </div> */}
         </div >
       </div>
 
@@ -109,8 +95,8 @@ export default function Index(props) {
                     <h2>{event.name}</h2>
                   </div>
                 </a>
-                {cookies.id != '' && (
-                  <LikeButton id={event.id} onClick={handleEventCkick}></LikeButton>
+                {preparedCookies.id != '' && (
+                  <LikeButton id={event.id} user={cookies.id} ></LikeButton>
                 )}
               </div>
 
@@ -127,7 +113,7 @@ export const getServerSideProps = async (context) => {
   const events = await getEvents()
 
   return {
-    props: { events }
+    props: { cookies: context.req.cookies, events }
   }
 }
 

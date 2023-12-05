@@ -4,10 +4,15 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from 'axios';
-import { styled } from '@mui/material/styles';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from '@mui/material';
 import { useCookies } from 'react-cookie'
+import isEmail from "validator/lib/isEmail";
 
 const style = {
     position: 'absolute',
@@ -17,18 +22,40 @@ const style = {
     width: 400,
     bgcolor: 'background.paper',
     border: '2px solid #000',
+    borderRadius: '15px',
     boxShadow: 24,
     p: 4,
 };
 
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#000000',
+        },
+        secondary: {
+            main: '#000000',
+        },
+    },
+});
+
+const RegButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText('#000000'),
+    color: '#000000',
+    borderColor: '#000000',
+    backgroundColor: '#FFFFFF',
+    '&:hover': {
+        backgroundColor: '#FFFFFF',
+        borderColor: '#000000',
+    },
+}));
 
 const AuthButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText('#8EE4AF'),
     backgroundColor: '#8EE4AF',
     '&:hover': {
-        backgroundColor: '#00ff47',
+        backgroundColor: '#8EE4AF',
         borderColor: '#000000',
-      },
+    },
 }));
 
 export function Auth() {
@@ -44,19 +71,28 @@ export function Auth() {
         setLogErrMessage('');
         setPasswordErrMessage('');
         setUsernameErrMessage('');
+        setRegMessage('')
     };
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [regMessage, setRegMessage] = useState('')
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
     const loginChanged = (event) => {
+        setLogErrMessage('');
         setLogin(event.target.value)
     };
     const passwordChanged = (event) => {
+        setPasswordErrMessage('');
         setPassword(event.target.value)
     };
     const usernameChanged = (event) => {
+        setUsernameErrMessage('');
         setUsername(event.target.value)
     };
     const [errMessage, setErrMessage] = useState('');
@@ -79,18 +115,6 @@ export function Auth() {
     }
 
     const logIn = () => {
-        axios.post('/api/logIn', { email: login, password: password }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            setCookies('token', res.data.token)
-            setCookies('id', res.data.id)
-            setCookies('name', res.data.name)
-        }).catch(err => console.log(err))
-    };
-
-    const registrate = () => {
         setRegMessage('');
         setErrMessage('');
         setLogErrMessage('');
@@ -102,19 +126,50 @@ export function Auth() {
         if (password.length === 0) {
             setPasswordErrMessage('пароль обязателен')
         }
+        if (login.length !== 0 & password.length !== 0) {
+            axios.post('/api/logIn', { email: login, password: password }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                setCookies('token', res.data.token)
+                setCookies('id', res.data.id)
+                setCookies('name', res.data.name)
+            }).catch(err => {
+                setErrMessage('неверный пароль или логин')
+            })
+        }
+    };
+
+    const registrate = () => {
+        setRegMessage('');
+        setErrMessage('');
+        setLogErrMessage('');
+        setPasswordErrMessage('');
+        setUsernameErrMessage('');
+        if (login.length === 0) {
+            setLogErrMessage('логин обязателен')
+        } else if (!isEmail(login)) {
+            setLogErrMessage('необходимо указать правильный email')
+        }
+        if (password.length === 0) {
+            setPasswordErrMessage('пароль обязателен')
+        }
         if (username.length === 0) {
             setUsernameErrMessage('имя пользователя обязательно')
         }
-        if (login.length != 0 & password.length != 0 & username.length != 0) {
+        if (login.length != 0 & password.length != 0 & username.length != 0 & isEmail(login)) {
+            setRegMessage('вы успешно зарегистрировались');
             axios.post('/api/registrate', { email: login, password: password, name: username }, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             }).catch(err => {
                 setErrMessage('пользователь уже существует')
+                setRegMessage('')
                 console.log(err)
             })
-            setRegMessage('вы успешно зарегистрировались');
+
         }
         else {
             setErrMessage('')
@@ -148,7 +203,15 @@ export function Auth() {
                             noValidate
                             autoComplete="off"
                         >
-                            <TextField id="filled-basic" label="Email" variant="filled" onChange={loginChanged} value={login} />
+                            <ThemeProvider theme={theme}>
+                                <TextField
+                                    id="filled-basic"
+                                    label="Email"
+                                    variant="filled"
+                                    onChange={loginChanged}
+                                    value={login}
+                                />
+                            </ThemeProvider>
                         </Box>
                         {logErrMessage && <div className='errorMessage'>{logErrMessage}</div>}
                     </Typography>
@@ -160,7 +223,29 @@ export function Auth() {
                             noValidate
                             autoComplete="off"
                         >
-                            <TextField id="filled-basic" label="Пароль" variant="filled" onChange={passwordChanged} value={password} />
+                            <ThemeProvider theme={theme}>
+                                <TextField
+                                    id="filled-basic"
+                                    label="Пароль"
+                                    variant="filled"
+                                    onChange={passwordChanged}
+                                    value={password}
+                                    type={showPassword ? "text" : "password"}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+                            </ThemeProvider>
                         </Box>
                         {passwordErrMessage && <div className='errorMessage'>{passwordErrMessage}</div>}
                     </Typography>
@@ -173,7 +258,9 @@ export function Auth() {
                                 noValidate
                                 autoComplete="off"
                             >
-                                <TextField id="filled-basic" label="Имя" variant="filled" onChange={usernameChanged} value={username} />
+                                <ThemeProvider theme={theme}>
+                                    <TextField id="filled-basic" label="Имя" variant="filled" onChange={usernameChanged} value={username} />
+                                </ThemeProvider>
                             </Box>
                             {usernameErrMessage && <div className='errorMessage'>{usernameErrMessage}</div>}
                         </Typography>
@@ -183,20 +270,24 @@ export function Auth() {
                         {process === 'registration' && (
                             <>
                                 <Typography>
-                                    <Button variant="outlined" onClick={registrate}> Зарегистрироваться</Button>
+                                    <RegButton variant="outlined" onClick={registrate}> Зарегистрироваться</RegButton>
                                 </Typography>
                                 <Typography>
-                                    <Link onClick={changeStep}>Войти</Link>
+                                    <ThemeProvider theme={theme}>
+                                        <Link onClick={changeStep}>Войти</Link>
+                                    </ThemeProvider>
                                 </Typography>
                             </>
                         )}
                         {process === 'logIn' && (
                             <>
                                 <Typography>
-                                    <Button variant="outlined" onClick={logIn}> Войти</Button>
+                                    <RegButton variant="outlined" onClick={logIn}> Войти</RegButton>
                                 </Typography>
                                 <Typography>
-                                    <Link onClick={changeStep}>Регистрация</Link>
+                                    <ThemeProvider theme={theme}>
+                                        <Link onClick={changeStep}>Регистрация</Link>
+                                    </ThemeProvider>
                                 </Typography>
                             </>
                         )}
