@@ -43,20 +43,21 @@ async function addUserToEvent(userId, eventId) {
     })
 }
 
-async function removeUserToEvent(userId) {
+async function removeUserToEvent(userId, eventId) {
     UserToEvent.destroy({
-        where: { userId: userId }
+        where: {
+            userId,
+            eventId
+        }
     })
 }
 
-async function isLiked(eventId, userId) {
-    const like = UserToEvent.findAll(({
-        where: { eventId: eventId, userId: userId }
-    }))
-    if (like) {
-        return true
-    }
-    return false
+async function getLikedEvents(userId) {
+    return await UserToEvent.findAll({
+        where: {
+            userId
+        }
+    }).then(res => res.map(e => e.eventId))
 }
 
-export { getEvents, addUser, hasLogin, findLogin, addUserToEvent, removeUserToEvent, isLiked }
+export { getEvents, addUser, hasLogin, findLogin, addUserToEvent, removeUserToEvent, getLikedEvents }

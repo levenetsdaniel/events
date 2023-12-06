@@ -2,8 +2,8 @@ import { removeUserToEvent } from "../../db/dbFunctions";
 
 export default async function favorite(req, res) {
     try {
-        const { user } = req.body
-        removeUserToEvent(user)
+        const { user, event } = req.body
+        removeUserToEvent(user, event)
         res.status(200).json({})
     }
     catch {

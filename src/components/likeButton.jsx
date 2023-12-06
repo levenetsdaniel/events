@@ -10,25 +10,11 @@ import axios from 'axios';
 
 
 export function LikeButton(props) {
-    const { id, user } = props;
-
-    const [click, setClicked] = React.useState(false)
-
-    const [status, setStatus] = React.useState(true)
-
-    axios.post('/api/isLiked', { eventId: id, userId: user }, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).catch(err => {
-        console.log(err)
-    })
-
+    const { id, user, liked } = props;
+    const [isLiked, setIsLiked] = React.useState(liked)
     const handleClick = () => {
-        setClicked(!click)
-        setStatus(!status)
         console.log(user, id)
-        if (!status) {
+        if (!isLiked) {
             axios.post('/api/addUserToEvent', { user: user, event: id }, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,7 +23,7 @@ export function LikeButton(props) {
                 console.log(err)
             })
         } else {
-            axios.post('/api/removeUserToEvent', { user: user }, {
+            axios.post('/api/removeUserToEvent', { user: user, event: id }, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -45,12 +31,13 @@ export function LikeButton(props) {
                 console.log(err)
             })
         }
+        setIsLiked(!isLiked)
     }
     return (
         <div className='likeButton'>
             <Box sx={{ '& > :not(style)': { m: 1 } }}>
                 <IconButton aria-label="like" onClick={handleClick}>
-                    <FavoriteIcon sx={{ color: (click ? pink[500] : grey[500]) }} />
+                    <FavoriteIcon sx={{ color: (isLiked ? pink[500] : grey[500]) }} />
                 </IconButton>
             </Box>
         </div>

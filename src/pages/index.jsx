@@ -1,4 +1,3 @@
-import { getEvents } from '../db/dbFunctions';
 import { Auth } from '../components/auth.jsx';
 import { LikeButton } from '../components/likeButton.jsx';
 import { LogoutButton } from '../components/logoutButton.jsx';
@@ -8,7 +7,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-
+import axios from 'axios';
+import Button from '@mui/material/Button';
 
 const theme = createTheme({
   palette: {
@@ -29,6 +29,10 @@ export default function Index(props) {
 
   const [sortEvents, setSortEvents] = useState(events)
 
+  const [likedEvents, setLikedEvents] = useState(events)
+
+  const [liked, setLiked] = useState(false)
+
   const [cookies, setCookies] = useCookies();
 
   const preparedCookies = useMemo(() => {
@@ -48,6 +52,13 @@ export default function Index(props) {
   }
 
   const [search, setSearch] = useState('');
+
+  // const showLiked = (liked) => {
+  //   if (!liked) {
+  //     setLiked(true)
+  //     setSortEvents(events.liked)
+  //   }
+  // }
 
   useEffect(() => {
     setCookies('id', props.cookies.id || '');
@@ -78,6 +89,7 @@ export default function Index(props) {
               </div>
             </Box>
           </div >
+          <Button variant="contained" /*onClick={showLiked(liked)}*/>изб</Button>
         </div >
       </div>
 
@@ -96,7 +108,7 @@ export default function Index(props) {
                   </div>
                 </a>
                 {preparedCookies.id != '' && (
-                  <LikeButton id={event.id} user={cookies.id} ></LikeButton>
+                  <LikeButton id={event.id} user={cookies.id} liked={!!event.liked}></LikeButton>
                 )}
               </div>
 
@@ -110,10 +122,12 @@ export default function Index(props) {
 };
 
 export const getServerSideProps = async (context) => {
-  const events = await getEvents()
+  const userId = context.req.cookies.id
+  console.log(userId)
+  const response = await axios.get('http://localhost:3000/api/getEvents', { params: { userId } }).catch(err => console.log(err))
 
   return {
-    props: { cookies: context.req.cookies, events }
+    props: { cookies: context.req.cookies, events: response.data.events }
   }
 }
 
