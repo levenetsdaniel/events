@@ -12,7 +12,9 @@ const ExitButton = styled(Button)(({ theme }) => ({
     },
 }));
 
-export function LogoutButton() {
+export function LogoutButton(props) {
+
+
 
     const [cookie, setCookies] = useCookies()
 
@@ -20,6 +22,7 @@ export function LogoutButton() {
         setCookies('token', '')
         setCookies('id', '')
         setCookies('name', '')
+        props.setId('')
     }
 
     return (

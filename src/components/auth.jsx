@@ -58,7 +58,7 @@ const AuthButton = styled(Button)(({ theme }) => ({
     },
 }));
 
-export function Auth() {
+export function Auth({setId}) {
     const [open, setOpen] = useState(false);
 
     const [cookies, setCookies] = useCookies()
@@ -135,6 +135,7 @@ export function Auth() {
                 setCookies('token', res.data.token)
                 setCookies('id', res.data.id)
                 setCookies('name', res.data.name)
+                setId(res.data.id)
             }).catch(err => {
                 setErrMessage('неверный пароль или логин')
             })

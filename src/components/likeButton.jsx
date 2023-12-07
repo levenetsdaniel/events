@@ -6,12 +6,12 @@ import { pink, grey } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
 
-
-
-
 export function LikeButton(props) {
     const { id, user, liked } = props;
     const [isLiked, setIsLiked] = React.useState(liked)
+
+    React.useEffect(() => setIsLiked(props.liked), [props.liked])
+
     const handleClick = () => {
         console.log(user, id)
         if (!isLiked) {
@@ -36,7 +36,7 @@ export function LikeButton(props) {
     return (
         <div className='likeButton'>
             <Box sx={{ '& > :not(style)': { m: 1 } }}>
-                <IconButton aria-label="like" onClick={handleClick}>
+                <IconButton aria-label="like" onClick={handleClick} title='like'>
                     <FavoriteIcon sx={{ color: (isLiked ? pink[500] : grey[500]) }} />
                 </IconButton>
             </Box>
