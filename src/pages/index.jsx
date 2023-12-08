@@ -52,9 +52,18 @@ export default function Index(props) {
         setEvents(res.data.events)
         setSortEvents(res.data.events)
         setLiked(true)
+        setSearch('')
       })
       .catch(err => console.log(err))
   }, [id])
+
+  const changeLiked = (eventId) => {
+    const newEvents = events.map(e => e.id == eventId ? { ...e, liked: !e.liked } : e)
+    setEvents(newEvents)
+    setSortEvents(newEvents)
+    setLiked(true)
+    setSearch('')
+  }
 
   const filter = (e) => {
     setSearch(e.target.value)
@@ -63,7 +72,7 @@ export default function Index(props) {
       setSortEvents(events)
       return
     }
-    var filteredList = events.filter(function (item) {
+    const filteredList = events.filter(function (item) {
       return item.name.toLowerCase().search(s.toLowerCase()) !== -1;
     });
     setSortEvents(filteredList);
@@ -135,7 +144,7 @@ export default function Index(props) {
                   </div>
                 </a>
                 {id != '' && (
-                  <LikeButton id={event.id} user={id} liked={!!event.liked}></LikeButton>
+                  <LikeButton id={event.id} user={id} liked={!!event.liked} changeLiked={changeLiked}></LikeButton>
                 )}
               </div>
 

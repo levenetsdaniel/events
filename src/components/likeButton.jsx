@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
 
 export function LikeButton(props) {
-    const { id, user, liked } = props;
+    const { id, user, liked, changeLiked } = props;
     const [isLiked, setIsLiked] = React.useState(liked)
 
     React.useEffect(() => setIsLiked(props.liked), [props.liked])
@@ -32,6 +32,7 @@ export function LikeButton(props) {
             })
         }
         setIsLiked(!isLiked)
+        changeLiked(id)
     }
     return (
         <div className='likeButton'>
