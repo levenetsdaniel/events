@@ -175,8 +175,6 @@ export function Auth({setId}) {
         else {
             setErrMessage('')
         }
-
-
     };
 
 
@@ -265,7 +263,6 @@ export function Auth({setId}) {
                             </Box>
                             {usernameErrMessage && <div className='errorMessage'>{usernameErrMessage}</div>}
                         </Typography>
-
                     )}
                     <Typography>
                         {process === 'registration' && (

@@ -66,6 +66,7 @@ export default function Index(props) {
   }
 
   const filter = (e) => {
+    setLiked(true)
     setSearch(e.target.value)
     const s = e.target.value
     if (s === '') {
@@ -132,6 +133,7 @@ export default function Index(props) {
 
 
       <div className='main'>
+        {!liked && <h1>Избранное:</h1>}
 
 
         {
