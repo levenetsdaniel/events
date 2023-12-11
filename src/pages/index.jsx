@@ -65,33 +65,13 @@ export default function Index(props) {
     setSearch('')
   }
 
-  const filter = (e) => {
-    setLiked(true)
-    setSearch(e.target.value)
-    const s = e.target.value
-    if (s === '') {
-      setSortEvents(events)
-      return
-    }
-    const filteredList = events.filter(function (item) {
-      return item.name.toLowerCase().search(s.toLowerCase()) !== -1;
-    });
-    setSortEvents(filteredList);
-  }
-
-
-
-  const showLiked = () => {
-    setLiked(!liked)
-    setSortEvents(events.filter(e => !liked || !!e.liked))
-  }
-
-  // useEffect(() => {
-  //   setCookies('id', props.cookies.id || '');
-  //   setCookies('name', props.cookies.name || '');
-  //   setCookies('token', props.cookies.token || '');
-  // }, [props.cookies]);
-
+  useEffect(() => {
+    setSortEvents(events.filter(e => {
+      const l = liked || !!e.liked
+      const s = e.name.toLowerCase().search(search.toLowerCase()) !== -1
+      return l && s
+    }))
+  }, [liked, search])
 
   return (
     <div className="App">
@@ -110,7 +90,7 @@ export default function Index(props) {
             >
               <div className='text'>
                 <ThemeProvider theme={theme}>
-                  <TextField fullWidth label="Поиск" id="fullWidth" variant="standard" onChange={filter} value={search} />
+                  <TextField fullWidth label="Поиск" id="fullWidth" variant="standard" onChange={e => setSearch(e.target.value)} value={search} />
                 </ThemeProvider>
               </div>
             </Box>
@@ -121,7 +101,7 @@ export default function Index(props) {
                 sx={style}
                 showLabels
                 // value={value}
-                onClick={showLiked}
+                onClick={() => setLiked(!liked)}
               >
                 <BottomNavigationAction label={preparedCookies.name} icon={<FavoriteIcon sx={{ color: (!liked ? pink[500] : grey[500]) }} />} />
               </BottomNavigation>

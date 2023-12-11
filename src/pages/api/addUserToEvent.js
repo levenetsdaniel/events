@@ -6,7 +6,7 @@ export default async function favorite(req, res) {
         addUserToEvent(user, event)
         res.status(200).json({})
     }
-    catch {
+    catch(err) {
         res.status(500).json({ message: err.message })
     }
 }

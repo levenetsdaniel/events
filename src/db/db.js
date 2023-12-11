@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(
-    'evnts',
-    'root',
-    '12345',
+    process.env['DB_DATABASE'],
+    process.env['DB_USER'],
+    process.env['DB_PASSWORD'],
     {
-        host: 'localhost',
+        host: process.env['DB_HOST'],
         dialect: 'mysql',
     }
 );

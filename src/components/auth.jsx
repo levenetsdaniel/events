@@ -192,8 +192,8 @@ export function Auth({setId}) {
                         {process === 'logIn' && 'Войти'}
                         {process === 'registration' && 'Регистрация'}
                     </Typography>
-                    {regMessage}
-                    {errMessage && <div className='errorMessage'>{errMessage}</div>}
+                    <h3>{regMessage}</h3>
+                    {errMessage && <div className='errorMessage'><h3>{errMessage}</h3></div>}
                     <Typography>
                         <Box
                             sx={{
