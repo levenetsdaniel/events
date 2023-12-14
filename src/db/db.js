@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+// require('dotenv').config()
 const sequelize = new Sequelize(
     process.env['DB_DATABASE'],
     process.env['DB_USER'],
@@ -62,14 +63,14 @@ const Event = sequelize.define("event", {
 });
 
 const UserToEvent = sequelize.define('userToEvent', {
-    userId:{
+    userId: {
         type: Sequelize.BIGINT,
         references: {
             model: User,
             key: 'id'
         }
     },
-    eventId:{
+    eventId: {
         type: Sequelize.BIGINT,
         references: {
             model: Event,
@@ -78,8 +79,8 @@ const UserToEvent = sequelize.define('userToEvent', {
     }
 })
 
-User.belongsToMany(Event, { through: UserToEvent }, {foreignKey: 'eventId'});
-Event.belongsToMany(User, { through: UserToEvent }, {foreignKey: 'userId'});
+User.belongsToMany(Event, { through: UserToEvent }, { foreignKey: 'eventId' });
+Event.belongsToMany(User, { through: UserToEvent }, { foreignKey: 'userId' });
 User.hasMany(UserToEvent);
 UserToEvent.belongsTo(User);
 Event.hasMany(UserToEvent);
