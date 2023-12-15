@@ -11,7 +11,7 @@
     background-color: #B5FAD0;
 }
 
-.main{
+.main {
     margin-top: 100px;
 }
 
@@ -26,9 +26,18 @@
     text-decoration: none;
 }
 
+@media (max-width: 600px) {
+    .eventCard a {
+        color: black;
+        text-decoration: none;
+        font-size: smaller;
+    }
+}
+
+
 .AuthButton {
     margin: 5px;
-    border: 1px solid ;
+    border: 1px solid;
     border-radius: 5px;
     background-color: #8EE4AF;
     color: black;
@@ -76,23 +85,14 @@
     margin-right: 10px;
 }
 
+.favoriteButton {
+    margin-right: 10px;
+}
+
 .text {
     margin-bottom: 10px;
     margin-right: 5px;
 }
-
-/* .eventSelector {
-    position: relative;
-    display: inline-block;
-    padding-right: 25px;
-}
-
-.selectButton {
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-} */
 
 .likeButton {
     padding: 16px;
@@ -101,23 +101,6 @@
     cursor: pointer;
 
 }
-
-/* .dropDawn {
-    display: none;
-    position: absolute;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-
-}
-
-.dropDawnOpen {
-    position: absolute;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    background-color: white;
-} */
 
 .errorMessage {
     color: red;
