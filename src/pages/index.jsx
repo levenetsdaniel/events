@@ -62,7 +62,7 @@ export default function Index(props) {
     setEvents(newEvents)
     setSortEvents(newEvents)
     setLiked(true)
-    setSearch('')
+    //setSearch('')
   }
 
   useEffect(() => {
