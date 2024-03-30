@@ -51,7 +51,7 @@ export default function Index(props) {
       .then(res => {
         setEvents(res.data.events)
         setSortEvents(res.data.events)
-        //setLiked(true)
+        setLiked(true)
         setSearch('')
       })
       .catch(err => console.log(err))
