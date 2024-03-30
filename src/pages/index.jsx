@@ -47,7 +47,7 @@ export default function Index(props) {
   const [id, setId] = useState(preparedCookies.id ?? '')
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/getEvents', { params: { userId: id } })
+    axios.get('http://localhost:80/api/getEvents', { params: { userId: id } })
       .then(res => {
         setEvents(res.data.events)
         setSortEvents(res.data.events)
@@ -142,7 +142,7 @@ export default function Index(props) {
 export const getServerSideProps = async (context) => {
   const userId = context.req.cookies.id
   console.log(userId)
-  const response = await axios.get('http://localhost:3000/api/getEvents', { params: { userId } }).catch(err => console.log(err))
+  const response = await axios.get('http://localhost:80/api/getEvents', { params: { userId } }).catch(err => console.log(err))
 
   return {
     props: { cookies: context.req.cookies, events: response.data.events }
