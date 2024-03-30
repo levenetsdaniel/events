@@ -61,7 +61,7 @@ export default function Index(props) {
     const newEvents = events.map(e => e.id == eventId ? { ...e, liked: !e.liked } : e)
     setEvents(newEvents)
     //setSortEvents(newEvents)
-    setLiked(true)
+    //setLiked(true)
     //setSearch('')
   }
 
